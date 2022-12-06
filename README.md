@@ -1,4 +1,4 @@
-# Repositório do Curso de Flutter com Web API - Integrando sua Aplicação, da Alura. 
+# 📱 Repositório de projeto Flutter 
 
 ## ✔️ Técnicas e tecnologias
 
