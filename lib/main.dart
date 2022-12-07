@@ -1,15 +1,17 @@
+// ignore_for_file: body_might_complete_normally_nullable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_webapi_first_course/models/journal.dart';
 import 'package:flutter_webapi_first_course/screens/add_journal_screen/add_journal_screen.dart';
-//import 'package:flutter_webapi_first_course/services/journal_service.dart';
+import 'package:flutter_webapi_first_course/services/journal_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/home_screen/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
 
-  //JournalService service = JournalService();
-  //service.register("Ola Mundo");
+  JournalService service = JournalService();
+  service.register(Journal.empty());
   //service.get();
 }
 
@@ -23,13 +25,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
         appBarTheme: const AppBarTheme(
-            elevation: 0,
-            backgroundColor: Colors.black,
-            titleTextStyle: TextStyle(
-              color: Colors.white,
-            ),
-            actionsIconTheme: IconThemeData(color: Colors.white),
-            iconTheme: IconThemeData(color: Colors.white)),
+          elevation: 0,
+          backgroundColor: Colors.black,
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+          ),
+          actionsIconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+        ),
         textTheme: GoogleFonts.bitterTextTheme(),
       ),
       darkTheme: ThemeData.dark(),
@@ -45,7 +52,6 @@ class MyApp extends StatelessWidget {
             return AddJournalScreen(journal: journal);
           });
         }
-        return null;
       },
     );
   }
