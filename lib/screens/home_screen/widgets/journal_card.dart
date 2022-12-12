@@ -20,7 +20,9 @@ class JournalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (journal != null) {
       return InkWell(
-        onTap: () {},
+        onTap: () {
+          callAddJournalScreen(context, journal: journal);
+        },
         child: Container(
           height: 115,
           margin: const EdgeInsets.all(8),
@@ -40,16 +42,18 @@ class JournalCard extends StatelessWidget {
                     decoration: const BoxDecoration(
                       color: Colors.black54,
                       border: Border(
-                          right: BorderSide(color: Colors.black87),
-                          bottom: BorderSide(color: Colors.black87)),
+                        right: BorderSide(color: Colors.black87),
+                        bottom: BorderSide(color: Colors.black87),
+                      ),
                     ),
                     padding: const EdgeInsets.all(16),
                     child: Text(
                       journal!.createdAt.day.toString(),
                       style: const TextStyle(
-                          fontSize: 32,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                        fontSize: 32,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   Container(
@@ -103,16 +107,22 @@ class JournalCard extends StatelessWidget {
     }
   }
 
-  callAddJournalScreen(BuildContext context) {
+  callAddJournalScreen(BuildContext context, {Journal? journal}) {
+    Journal innerJournal = Journal(
+      id: const Uuid().v1(),
+      content: "",
+      createdAt: showedDate,
+      updatedAt: showedDate,
+    );
+
+    if (journal != null) {
+      innerJournal = journal;
+    }
+
     Navigator.pushNamed(
       context,
       'add-journal',
-      arguments: Journal(
-        id: const Uuid().v1(),
-        content: "",
-        createdAt: showedDate,
-        updatedAt: showedDate,
-      ),
+      arguments: innerJournal,
     ).then((value) {
       refreshFunction();
       if (value != null && value == true) {
