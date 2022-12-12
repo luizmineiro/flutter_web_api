@@ -14,14 +14,14 @@ class JournalService {
   http.Client client =
       InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
-  String geturl() {
+  String getUrl() {
     return "$url$resource";
   }
 
   Future<bool> register(Journal journal) async {
     String jsonJournal = json.encode(journal.toMap());
     http.Response response = await client.post(
-      Uri.parse(geturl()),
+      Uri.parse(getUrl()),
       headers: {"Content-type": "application/json"},
       body: jsonJournal,
     );
@@ -35,7 +35,7 @@ class JournalService {
     String jsonJournal = json.encode(journal.toMap());
 
     http.Response response = await client.put(
-      Uri.parse("${geturl()}$id"),
+      Uri.parse("${getUrl()}$id"),
       headers: {"Content-type": "application/json"},
       body: jsonJournal,
     );
@@ -47,7 +47,7 @@ class JournalService {
   }
 
   Future<List<Journal>> getAll() async {
-    http.Response response = await client.get(Uri.parse(geturl()));
+    http.Response response = await client.get(Uri.parse(getUrl()));
 
     if (response.statusCode != 200) {
       throw Exception();
@@ -64,5 +64,14 @@ class JournalService {
     print(list.length);
 
     return list;
+  }
+
+  Future<bool> delete(String id) async {
+    http.Response response = await http.delete(Uri.parse("${getUrl()}$id"));
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
   }
 }

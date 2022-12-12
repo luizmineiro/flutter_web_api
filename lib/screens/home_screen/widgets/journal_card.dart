@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webapi_first_course/helpers/weekday.dart';
 import 'package:flutter_webapi_first_course/models/journal.dart';
+import 'package:flutter_webapi_first_course/screens/common/confirmation_dialog.dart';
+import 'package:flutter_webapi_first_course/services/journal_service.dart';
 import 'package:uuid/uuid.dart';
 
 class JournalCard extends StatelessWidget {
@@ -85,6 +87,12 @@ class JournalCard extends StatelessWidget {
                   ),
                 ),
               ),
+              IconButton(
+                onPressed: () {
+                  removeJournal(context);
+                },
+                icon: const Icon(Icons.delete),
+              )
             ],
           ),
         ),
@@ -114,15 +122,21 @@ class JournalCard extends StatelessWidget {
       createdAt: showedDate,
       updatedAt: showedDate,
     );
+    Map<String, dynamic> map = {};
 
     if (journal != null) {
       innerJournal = journal;
+      map['is_editing'] = false;
+    } else {
+      map['is_editing'] = true;
     }
+
+    map['journal'] = innerJournal;
 
     Navigator.pushNamed(
       context,
       'add-journal',
-      arguments: innerJournal,
+      arguments: map,
     ).then((value) {
       refreshFunction();
       if (value != null && value == true) {
@@ -133,5 +147,33 @@ class JournalCard extends StatelessWidget {
         );
       }
     });
+  }
+
+  removeJournal(BuildContext context) {
+    JournalService service = JournalService();
+    if (journal != null) {
+      showConfirmationDialog(
+        context,
+        content:
+            "Deseja realmente remover a entrada do dia ${WeekDay(journal!.createdAt)}",
+        affirmativeOption: "Remover",
+      ).then((value) {
+        if (value != null) {
+          if (value) {
+            service.delete(journal!.id).then((value) {
+              if (value) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Removido com sucesso"),
+                  ),
+                );
+
+                refreshFunction();
+              }
+            });
+          }
+        }
+      });
+    }
   }
 }

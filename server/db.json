@@ -1,4 +1,11 @@
 {
+  "users": [
+    {
+      "email": "jluizmineiro@gmail.com",
+      "password": "$2a$10$w8XKkzkex0sCMRT7AttuY.iLuBqjhvnFOti2e3U3AXGpRzLsGaDki",
+      "id": 1
+    }
+  ],
   "learnhttp": {
     "content": "Ola Mundo"
   },
